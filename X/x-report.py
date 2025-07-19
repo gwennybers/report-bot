@@ -5,6 +5,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 # --- CONFIGURATION ---
 # Update the usernames of accounts to be reported in the separate file.
@@ -26,16 +28,17 @@ def prompt_credentials():
 def setup_driver():
     chrome_options = Options()
     chrome_options.add_argument("--start-maximized")
+    chrome_options.add_argument("--incognito")
     # chrome_options.add_argument("--headless")  # Uncomment for headless mode
     return webdriver.Chrome(options=chrome_options)
 
 def random_delay():
-  time.sleep(random.uniform(2, 5))
+  time.sleep(random.uniform(2, 3))
 
 def login_x(driver, username, password):
     print("[INFO] Logging in to X...")
     driver.get("https://x.com/login")
-    random_delay()
+    time.sleep(5)
     try:
         username_input = driver.find_element(By.NAME, "text")
         username_input.send_keys(username)
@@ -58,33 +61,47 @@ def report_account(driver, username):
     time.sleep(5)
     try:
         # Click the "..." (More) button
-        driver.find_element(By.XPATH, '//button[@aria-label="More"]').click()
+        WebDriverWait(driver, 15).until(
+            EC.element_to_be_clickable((By.XPATH, '//button[@aria-label="More"]'))
+        ).click()
         random_delay()
         
         # Click "Report @username"
-        driver.find_element(By.XPATH, '//span[contains(text(), "Report")]').click()
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//span[contains(text(), "Report")]'))
+        ).click()
         random_delay()
         
         # Select a reason (example: "Hate")
         # This can be changed based on more accurate basis.
-        driver.find_element(By.XPATH, "//*[text()='Hate']").click()
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//*[text()='Hate']"))
+        ).click()
         random_delay()
 
         # Next
-        driver.find_element(By.XPATH, '//span[contains(text(), "Next")]').click()
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//span[contains(text(), "Next")]'))
+        ).click()
         random_delay()
 
         # Select a reason (example: "Dehumanization")
         # This can be changed as well. 
-        driver.find_element(By.XPATH, "//*[text()='Dehumanization']").click()
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//*[text()='Dehumanization']"))
+        ).click()
         random_delay()
 
         # Submit
-        driver.find_element(By.XPATH, '//span[contains(text(), "Submit")]').click()
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//span[contains(text(), "Submit")]'))
+        ).click()
         random_delay()
 
         # Done
-        driver.find_element(By.XPATH, '//span[contains(text(), "Done")]').click()
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//span[contains(text(), "Done")]'))
+        ).click()
         random_delay()
         
         print(f"[SUCCESS] Reported @{username}")
