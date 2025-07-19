@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 
 # --- CONFIGURATION ---
+# Update the usernames of accounts to be reported in the separate file.
 ACCOUNTS_TO_REPORT_FILE = "account-list.txt"
 
 def get_accounts(filename):
@@ -59,12 +60,13 @@ def report_account(driver, username):
         # Click the "..." (More) button
         driver.find_element(By.XPATH, '//button[@aria-label="More"]').click()
         random_delay()
+        
         # Click "Report @username"
         driver.find_element(By.XPATH, '//span[contains(text(), "Report")]').click()
         random_delay()
+        
         # Select a reason (example: "Hate")
-        # spam_option = driver.find_element(By.XPATH, '//span[contains(text(), "Hate")]')
-        # driver.find_element(By.XPATH, '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/div/div[2]/div/div/label[1]/div[2]/input').click()
+        # This can be changed based on more accurate basis.
         driver.find_element(By.XPATH, "//*[text()='Hate']").click()
         random_delay()
 
@@ -72,7 +74,8 @@ def report_account(driver, username):
         driver.find_element(By.XPATH, '//span[contains(text(), "Next")]').click()
         random_delay()
 
-        # Dehumanization
+        # Select a reason (example: "Dehumanization")
+        # This can be changed as well. 
         driver.find_element(By.XPATH, "//*[text()='Dehumanization']").click()
         random_delay()
 
@@ -84,10 +87,6 @@ def report_account(driver, username):
         driver.find_element(By.XPATH, '//span[contains(text(), "Done")]').click()
         random_delay()
         
-        # # Confirm report (the actual steps may vary)
-        # confirm_button = driver.find_element(By.XPATH, '//div[@role="button" and .//span[contains(text(), "Next")]]')
-        # confirm_button.click()
-        # random_delay()
         print(f"[SUCCESS] Reported @{username}")
     except Exception as e:
         print(f"[ERROR] Failed to report @{username}: {e}")
